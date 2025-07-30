@@ -1,0 +1,139 @@
+[versions]
+# Desugar
+desugarJdkLibs = "2.1.5"
+
+# Core
+agp = "8.11.1"
+kotlin = "2.2.0"
+ksp = "2.2.0-2.0.2"
+coreKtx = "1.16.0"
+lifecycle = "2.9.2"
+appcompat = "1.7.1"
+
+# UI
+composeBom = "2025.07.00"
+activityCompose = "1.10.1"
+
+# Testing
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+material = "1.12.0"
+jetbrainsKotlinJvm = "2.2.0"
+
+
+[libraries]
+# Desugar
+desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+
+# Core
+core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+
+# Build plugins
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-compose-gradle = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
+ksp-gradle = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
+
+# UI
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+junit4-compose = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+
+[bundles]
+# Build-logic plugins
+plugins = [
+    "android-gradle",
+    "kotlin-gradle",
+    "kotlin-compose-gradle",
+    "ksp-gradle"
+]
+
+# App
+app-core = [
+    "core",
+    "lifecycle"
+]
+app-ui = [
+    # Compose bom #
+    "compose-activity",
+    "compose-viewmodel",
+    "ui",
+    "ui-graphics",
+    "ui-preview",
+    "material3"
+]
+app-data = []
+app-unit-testing = [
+    "junit"
+]
+app-android-testing = [
+    # Compose bom #
+    "junit",
+    "espresso-core",
+    "junit4-compose"
+]
+app-debug = [
+    "ui-tooling",
+    "ui-test-manifest"
+]
+
+# Base
+# "core", "appcompat" #for core?
+base-core = []
+base-testing = [
+    "junit"
+]
+
+# Compose
+compose-core = []
+compose-ui = [
+    # Compose bom #
+    "compose-activity",
+    "compose-viewmodel",
+    "ui",
+    "ui-graphics",
+    "ui-preview",
+    "material3"
+]
+compose-unit-testing = [
+    "junit"
+]
+compose-android-testing = [
+    # Compose bom #
+    "junit",
+    "junit-ext",
+    "junit4-compose",
+    "espresso-core",
+    "ui-test-manifest"
+]
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+# Plugins defined by this project
+app-conf = { id = "app.plugin" }
+base-conf = { id = "base.plugin" }
+compose-conf = { id = "compose.plugin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
