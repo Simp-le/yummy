@@ -3,12 +3,15 @@
 desugarJdkLibs = "2.1.5"
 
 # Core
-agp = "8.11.1"
+agp = "8.12.0"
 kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"
 coreKtx = "1.16.0"
 lifecycle = "2.9.2"
-appcompat = "1.7.1"
+
+# DI
+hilt = "2.56.2" # TODO: 2.57 is not working with agp = 8.12.0, update to further version, see https://github.com/google/dagger/issues/4848
+hiltNavigationCompose = "1.2.0"
 
 # UI
 composeBom = "2025.07.00"
@@ -16,10 +19,8 @@ activityCompose = "1.10.1"
 
 # Testing
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-material = "1.12.0"
-jetbrainsKotlinJvm = "2.2.0"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
 
 
 [libraries]
@@ -28,14 +29,19 @@ desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", versi
 
 # Core
 core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 
 # Build plugins
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+hilt-gradle = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlin-compose-gradle = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
 ksp-gradle = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
+
+# DI
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 
 # UI
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -53,7 +59,7 @@ junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junitV
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 junit4-compose = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 
 
 [bundles]
@@ -61,6 +67,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 plugins = [
     "android-gradle",
     "kotlin-gradle",
+    "hilt-gradle",
     "kotlin-compose-gradle",
     "ksp-gradle"
 ]
@@ -68,7 +75,8 @@ plugins = [
 # App
 app-core = [
     "core",
-    "lifecycle"
+    "lifecycle",
+    "hilt"
 ]
 app-ui = [
     # Compose bom #
@@ -77,17 +85,20 @@ app-ui = [
     "ui",
     "ui-graphics",
     "ui-preview",
-    "material3"
+    "material3",
+    "hilt-navigation-compose"
 ]
 app-data = []
 app-unit-testing = [
-    "junit"
+    "junit",
+    "hilt-testing"
 ]
 app-android-testing = [
     # Compose bom #
     "junit",
     "espresso-core",
-    "junit4-compose"
+    "junit4-compose",
+    "hilt-testing"
 ]
 app-debug = [
     "ui-tooling",
@@ -95,14 +106,18 @@ app-debug = [
 ]
 
 # Base
-# "core", "appcompat" #for core?
-base-core = []
+base-core = [
+    "hilt"
+]
 base-testing = [
-    "junit"
+    "junit",
+    "hilt-testing"
 ]
 
 # Compose
-compose-core = []
+compose-core = [
+    "hilt"
+]
 compose-ui = [
     # Compose bom #
     "compose-activity",
@@ -110,10 +125,12 @@ compose-ui = [
     "ui",
     "ui-graphics",
     "ui-preview",
-    "material3"
+    "material3",
+    "hilt-navigation-compose"
 ]
 compose-unit-testing = [
-    "junit"
+    "junit",
+    "hilt-testing"
 ]
 compose-android-testing = [
     # Compose bom #
@@ -121,7 +138,8 @@ compose-android-testing = [
     "junit-ext",
     "junit4-compose",
     "espresso-core",
-    "ui-test-manifest"
+    "ui-test-manifest",
+    "hilt-testing"
 ]
 
 
@@ -131,9 +149,9 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 
 # Plugins defined by this project
 app-conf = { id = "app.plugin" }
 base-conf = { id = "base.plugin" }
 compose-conf = { id = "compose.plugin" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }

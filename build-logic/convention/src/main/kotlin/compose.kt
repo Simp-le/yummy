@@ -3,6 +3,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 import utils.androidConfig
 import utils.libs
 
@@ -12,6 +13,7 @@ internal class ComposeConfigBinaryPlugin : Plugin<Project> {
     private fun Project.applyAndroid() {
         applyPlugins()
         setProjectConfig()
+        configureKapt()
         setDependencies()
     }
 
@@ -19,8 +21,7 @@ internal class ComposeConfigBinaryPlugin : Plugin<Project> {
         apply("com.android.library")
         apply("kotlin-android")
         apply("kotlin-composecompiler")
-//        apply("kotlin-kapt")
-//        apply("kotlin-parcelize")
+        apply("kotlin-kapt")
     }
 
     private fun Project.setProjectConfig() = configure<LibraryExtension> { // utils.android
@@ -28,6 +29,8 @@ internal class ComposeConfigBinaryPlugin : Plugin<Project> {
 
         buildFeatures.compose = true
     }
+
+    private fun Project.configureKapt() = configure<KaptExtension> { correctErrorTypes = true }
 
     private fun Project.setDependencies() = dependencies {
         // Desugaring
@@ -38,6 +41,7 @@ internal class ComposeConfigBinaryPlugin : Plugin<Project> {
         if (project.path != ":core:common") "implementation"(project(":core:common"))
 
         // Core
+        "kapt"(libs.findLibrary("hilt-compiler").get())
         "implementation"(libs.findBundle("compose-core").get())
 
         // UI
@@ -47,6 +51,8 @@ internal class ComposeConfigBinaryPlugin : Plugin<Project> {
         "implementation"(libs.findBundle("compose-ui").get())
 
         // Testing
+        "kaptTest"(libs.findLibrary("hilt-compiler").get())
+        "kaptAndroidTest"(libs.findLibrary("hilt-compiler").get())
         "testImplementation"(libs.findBundle("compose-unit-testing").get())
         "androidTestImplementation"(platform(composeBom))
         "androidTestImplementation"(libs.findBundle("compose-android-testing").get())
