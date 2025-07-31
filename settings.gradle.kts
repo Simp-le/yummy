@@ -12,6 +12,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -37,4 +39,15 @@ include(":feature")
 include(":feature:onboarding")
 include(":feature:onboarding:onboarding-domain")
 include(":feature:onboarding:onboarding-presentation")
-include(":feature:recipes")
+include(":feature:profile")
+include(":feature:profile:profile-data")
+include(":feature:profile:profile-domain")
+include(":feature:profile:profile-presentation")
+include(":feature:explore")
+include(":feature:explore:explore-data")
+include(":feature:explore:explore-domain")
+include(":feature:explore:explore-presentation")
+include(":feature:recipe")
+include(":feature:recipe:recipe-data")
+include(":feature:recipe:recipe-domain")
+include(":feature:recipe:recipe-presentation")
